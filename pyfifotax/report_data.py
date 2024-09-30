@@ -44,7 +44,7 @@ class ReportData:
         self,
         sub_dir: str,
         file_name: str,
-        apply_stock_splits: bool = True,
+        stock_splits_fp: str | None = None,
     ):
         self.legacy_mode = False
 
@@ -53,9 +53,9 @@ class ReportData:
         self.file_name = file_name
 
         # save flag to apply stock splits and remember path to file defining splits
-        self.apply_stock_splits = apply_stock_splits
-        self.stock_split_file_path = os.path.join(sub_dir, "stock_splits.xlsx")
-        if apply_stock_splits and not os.path.exists(self.stock_split_file_path):
+        self.apply_stock_splits = stock_splits_fp is not None
+        self.stock_split_file_path = stock_splits_fp
+        if self.apply_stock_splits and not os.path.exists(self.stock_split_file_path):
             raise FileNotFoundError(
                 f"{self.stock_split_file_path} not found but set apply_stock_splits to True, abort."
             )

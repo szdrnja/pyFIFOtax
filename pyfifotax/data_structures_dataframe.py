@@ -44,6 +44,7 @@ class ESPPRow(DataFrameRow):
     quantity: np.float64
     currency: str
     comment: str
+    sold: int = 0
 
     @staticmethod
     def from_schwab_json(json_dict: dict) -> ESPPRow:
@@ -103,6 +104,7 @@ class RSURow(DataFrameRow):
     fair_market_value: np.float64
     currency: str
     comment: str
+    sold: int = 0
 
     @staticmethod
     def from_schwab_lapse_json(json_dict: dict) -> tuple[RSURow, int]:

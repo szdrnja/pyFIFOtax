@@ -44,10 +44,17 @@ parser.add_argument(
         " Overrides both 'rate_mode' and 'report_year'."
     ),
 )
+parser.add_argument(
+    "--stock_splits_fp",
+    dest="stock_splits_fp",
+    type=str,
+    required=True,
+    help="Filepath to the stock_splits.xlsx file",
+)
 
 
-def main(sub_dir, file_name, report_year, rate_mode, create_all_reports):
-    report = ReportData(sub_dir=sub_dir, file_name=file_name)
+def main(sub_dir, file_name, report_year, rate_mode, create_all_reports, stock_splits_fp: str):
+    report = ReportData(sub_dir=sub_dir, file_name=file_name, stock_splits_fp=stock_splits_fp)
     if create_all_reports:
         report.create_all_reports()
 
@@ -66,4 +73,5 @@ if __name__ == "__main__":
         args.report_year,
         args.rate_mode,
         args.all,
+        args.stock_splits_fp
     )
