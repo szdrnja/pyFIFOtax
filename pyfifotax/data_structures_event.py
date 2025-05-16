@@ -56,7 +56,7 @@ class ReportEvent:
         return events
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__} on {self.date}"
+        return f"{self.__class__.__name__} on {self.__dict__}"
 
 
 class RSUEvent(ReportEvent):

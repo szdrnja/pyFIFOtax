@@ -34,6 +34,7 @@ parser.add_argument(
     dest="rate_mode",
     choices=["daily", "monthly"],
     help="which exchange rates to apply, either daily exchange rates or monthly averages",
+    required=True,
 )
 parser.add_argument(
     "--all",
@@ -60,7 +61,7 @@ def main(sub_dir, file_name, report_year, rate_mode, create_all_reports, stock_s
 
     else:
         report.create_excel_report(
-            report_year, rate_mode, f"tax_report_{report_year}_{rate_mode}_rates"
+            report_year, rate_mode, f"tax_report_{report_year}_{rate_mode}_rates.xlsx"
         )
         report.create_excel_report_awv(report_year, f"awv_report_{report_year}.xlsx")
 

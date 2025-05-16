@@ -1,6 +1,7 @@
 import pandas as pd
 import json
 import argparse
+import os
 
 from pyfifotax.utils import create_report_sheet
 from pyfifotax.data_structures_dataframe import (
@@ -71,7 +72,7 @@ def process_schwab_json(json_file_name, xlsx_file_name, forex_transfer_as_exchan
 
     with open(json_file_name) as f:
         d = json.load(f)
-        for e in d["Transactions"]:
+        for e in reversed(d["Transactions"]):
             if e["Action"] == "Deposit" and e["Description"] == "ESPP":
                 espp = ESPPRow.from_schwab_json(e)
                 if espp.date in schwab_espp_deposit_events:
@@ -116,7 +117,7 @@ def process_schwab_json(json_file_name, xlsx_file_name, forex_transfer_as_exchan
                     elif details["Type"] == "ESPP":
                         date = datetime.strptime(details["PurchaseDate"], "%m/%d/%Y").date()
                         if date not in schwab_espp_deposit_events:
-                            raise RuntimeError(f"Ran into a Sale event with sold ESPPs {key} that do not exist")
+                            raise RuntimeError(f"Ran into a Sale event with sold ESPPs {date} that do not exist")
                         schwab_espp_deposit_events[date].sold += int(details["Shares"])
             elif (
                 e["Action"] == "Wire Transfer"
@@ -218,6 +219,7 @@ def process_schwab_json(json_file_name, xlsx_file_name, forex_transfer_as_exchan
         "money_transfers": pd.DataFrame(schwab_money_transfer_events),
     }
 
+    os.makedirs(os.path.dirname(xlsx_file_name), exist_ok=True)
     with pd.ExcelWriter(
         xlsx_file_name, engine="xlsxwriter", datetime_format="yyyy-mm-dd"
     ) as writer:

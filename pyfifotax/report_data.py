@@ -201,6 +201,7 @@ class ReportData:
 
         # first, just create all events from raw data
         self.report_events.extend(RSUEvent.from_report(raw_data.rsu))
+        print(*self.report_events, sep="\n")
         self.report_events.extend(DividendEvent.from_report(raw_data.dividends))
         self.report_events.extend(TaxEvent.from_report(raw_data.dividends))
         self.report_events.extend(BuyEvent.from_report(raw_data.buy_orders))
